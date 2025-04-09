@@ -75,7 +75,7 @@ jobs:
       - name: Scan the Docker image
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'docker.io/Venkatasaikumarkethala/homework9:${{ github.sha }}'
+          image-ref: 'docker.io/venkatasaikumar200/homework9:${{ github.sha }}'
           format: 'table'
           exit-code: '1' # Fail the job if vulnerabilities are found
           ignore-unfixed: true
