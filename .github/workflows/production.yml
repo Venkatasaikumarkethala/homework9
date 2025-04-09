@@ -36,6 +36,9 @@ jobs:
           pip install -r requirements.txt
           
       - name: Run tests with Pytest
+        env:
+           ADMIN_USER: ${{ secrets.ADMIN_USER }}
+           ADMIN_PASSWORD: ${{ secrets.ADMIN_PASSWORD }}
         run: pytest
 
   build-and-push-docker:
@@ -58,16 +61,23 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: kaw393939/devops_demo:${{ github.sha }} # Uses the Git SHA for tagging
+          tags: docker.io/Venkatasaikumarkethala/homework9:${{ github.sha }} # Uses your GitHub repo for tagging  
           platforms: linux/amd64,linux/arm64 # Multi-platform support
-          cache-from: type=registry,ref=kaw393939/devops_demo:cache
+          cache-from: type=registry,ref=docker.io/Venkatasaikumarkethala/homework9:cache
           cache-to: type=inline,mode=max
+          
+      - name: Cache Trivy vulnerability DB
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/trivy
+          key: ${{ runner.os }}-trivy-db
           
       - name: Scan the Docker image
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'kaw393939/devops_demo:${{ github.sha }}'
+          image-ref: 'docker.io/Venkatasaikumarkethala/homework9:${{ github.sha }}'
           format: 'table'
           exit-code: '1' # Fail the job if vulnerabilities are found
           ignore-unfixed: true
           severity: 'CRITICAL,HIGH'
+          github-pat: ${{ secrets.TRIVY_GITHUB_TOKEN }}
