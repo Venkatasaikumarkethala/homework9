@@ -25,7 +25,7 @@ SERVER_BASE_URL = os.getenv('SERVER_BASE_URL', 'http://localhost:80')
 
 # SERVER_DOWNLOAD_FOLDER specifies the directory exposed by the server for downloads,
 # such as QR codes. This could be a path routed by your server for static files.
-SERVER_DOWNLOAD_FOLDER = os.getenv('SERVER_DOWNLOAD_FOLDER', 'downloads')
+SERVER_DOWNLOAD_FOLDER = Path(os.getenv('SERVER_DOWNLOAD_FOLDER', './qr_codes')).resolve()
 
 # SECRET_KEY is used in cryptographic operations, such as signing JWT tokens. 
 # It should be a long, random string that is kept secret.
@@ -41,4 +41,4 @@ ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", 30))
 # ADMIN_USER and ADMIN_PASSWORD are placeholder credentials for basic authentication
 # in this example. In production, use a more secure authentication method.
 ADMIN_USER = os.getenv('ADMIN_USER', 'admin')
-ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD', 'ecret')
+ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD', 'secret')
