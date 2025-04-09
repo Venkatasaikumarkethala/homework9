@@ -1,37 +1,82 @@
-# RestAPI for Creating QR Codes
+# Homework 9: QR Code API with CI/CD Pipeline
 
-For this assignment I want you to go over the videos and I've created a X number of errors in the code that you will have to find and fix them.  You should keep running the tests and read the error and try to understand what it mean.  The purpose of this assignment is to get you accustomed to running the project and following the steps that the program uses to process requests.
+This project implements a QR Code generation API using FastAPI, paired with a CI/CD pipeline that ensures high code quality and security. The API allows authenticated users to generate, list, and delete QR codes.
 
-Here is my repo with the working code: [https://github.com/kaw393939/fastapi_spring2024](https://github.com/kaw393939/fastapi_spring2024)
+## Features
 
-You can get this repo working with the install instructions below.  The assignment repo will not work because its filled with broken code.
+- **QR Code Management:** 
+  - Create, list, and delete QR codes.
+  - Secure operations with OAuth2 authentication.
+- **CI/CD Pipeline:** 
+  - Automated testing, Docker image builds, and vulnerability scans.
+  - Integrated with GitHub Actions for seamless deployment.
 
-**To submit this assignment, you should make your own repository and add the remote to git and then push your fixed code to your own repo.** 
+## Fixes and Improvements
 
-## Grading
+During development, several issues were resolved to ensure a stable and functional pipeline:
+0. **Spellchecks Fix throughout the repo:**
+   - Fixed bugs related to spellings for multiple files in the repo.
 
-You will only get 100 if the entire QR program passes GitHub actions, so you will need to update the production.yml file to have your info and setup your environment variables on the repository.
+1. **Authentication in Test Cases:**
+   - Fixed `401 Unauthorized` errors by properly setting and loading `ADMIN_USER` and `ADMIN_PASSWORD` environment variables in both test and production environments.
 
-# Instructor Videos
-* [Rest API Project Overview](https://youtu.be/xEcBKSSXxhQ)
-* [QR Code Overview for Assignment](https://youtu.be/E6b9VkQpQ-U)
+2. **QR Code Conflict Handling:**
+   - Implemented logic to return `409 Conflict` if a QR code already exists, ensuring the create endpoint is idempotent.
 
+3. **Correct Docker Configuration:**
+   - Updated Docker image tagging to use the correct Docker Hub username and included the `docker.io` prefix for proper publishing.
 
-## Optional but extremely helpful:
+4. **Trivy Integration Fixes:**
+   - Solved Trivy failures due to rate limiting by adding `TRIVY_GITHUB_TOKEN` and ensuring database download during scans completes smoothly.
 
-1. [Best Series to Learn Bash Scripting Seriously learn this!!!](https://www.youtube.com/playlist?list=PLIhvC56v63IKioClkSNDjW7iz-6TFvLwS)
+5. **Vulnerability Resolutions:**
+   - Addressed CVEs by updating dependencies:
+     - Upgraded `python-jose` to `3.4.0` and downgraded `pyasn1` to `0.4.8` for compatibility.
+     - Locked `starlette` to `0.40.0` to ensure FastAPI compatibility.
 
-2.  [Listen to someone else explain FastAPI and go through a project](https://www.youtube.com/watch?v=cbASjoZZGIw)
+## Prerequisites
 
-# Install
-1. Clone
-2. Make virtual environment:  python3 -m venv venv
-3. Activate virtual environment: source venv/bin/activate
-4. Install requirements: pip install -r requirements.txt
-5. **IMPORTANT** run: mkdir qr_codes to create a qr codes directory to save in, permissions will be messed up and the docker container won't be able to write to the qr_codes directory if you don't.
-6. Note: make sure docker is started
-7. run pytest locally to check that it works locally
-8. Start the app with docker compose up --build
-9. Goto http://localhost/docs to view openapi spec documentation
-10. Click "authorize" input username: admin password: secret
-11. Test making,  retrieving, and deleting QR codes on the spec page.
+- Python 3.10 or higher
+- Docker installed and configured
+- Optional: Trivy for local image scanning
+
+## Setup Instructions
+
+1. Clone the repository:
+   ```bash
+   git clone <your-repo-url>
+   cd homework9
+   ```
+
+2. Create and activate a virtual environment:
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
+
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Create necessary directories:
+   ```bash
+   mkdir -p qr_codes
+   ```
+
+5. Run the app:
+   ```bash
+   docker compose up --build
+   ```
+
+6. Run tests:
+   ```bash
+   pytest
+   ```
+
+7. View API docs:
+   Visit [http://localhost/docs](http://localhost/docs)
+
+## Author
+
+Venkata Saikumar Kethala
