@@ -61,9 +61,9 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          tags: docker.io/Venkatasaikumarkethala/homework9:${{ github.sha }} # Uses your GitHub repo for tagging  
-          platforms: linux/amd64,linux/arm64 # Multi-platform support
-          cache-from: type=registry,ref=docker.io/Venkatasaikumarkethala/homework9:cache
+          tags: docker.io/venkatasaikumar200/homework9:${{ github.sha }}
+          cache-from: type=registry,ref=docker.io/venkatasaikumar200/homework9:cache
+          image-ref: 'docker.io/venkatasaikumar200/homework9:${{ github.sha }}'
           cache-to: type=inline,mode=max
           
       - name: Cache Trivy vulnerability DB
@@ -71,7 +71,7 @@ jobs:
         with:
           path: ~/.cache/trivy
           key: ${{ runner.os }}-trivy-db
-          
+
       - name: Scan the Docker image
         uses: aquasecurity/trivy-action@master
         with:
